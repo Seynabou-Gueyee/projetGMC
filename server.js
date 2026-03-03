@@ -60,6 +60,7 @@ const socketAuthMiddleware = (socket, next) => {
 
 // Pour stocker les utilisateurs connectés
 const User = require('./models/User');
+const Message = require('./models/Message');
 const connectedUsers = new Map();
 
 io.use(socketAuthMiddleware);
@@ -90,14 +91,37 @@ io.on('connection', async (socket) => {
   });
 
   // Envoyer un message
-  socket.on('send_message', (data) => {
-    io.to(data.room).emit('receive_message', {
-      userId: socket.userId,
-      senderName: user ? user.username : 'Utilisateur',
-      content: data.content,
-      room: data.room,
-      timestamp: new Date()
-    });
+  socket.on('send_message', async (data) => {
+    try {
+      // Sauvegarder le message dans la base de données
+      const newMessage = await Message.create({
+        content: data.content,
+        sender: socket.userId,
+        senderName: user ? user.username : 'Utilisateur',
+        room: data.room,
+        recipient: data.recipient || null
+      });
+
+      // Récupérer le message avec les informations du sender
+      const populatedMessage = await Message.findById(newMessage._id)
+        .populate('sender', 'username email')
+        .populate('recipient', 'username email');
+
+      // Envoyer le message à tous les utilisateurs du salon
+      io.to(data.room).emit('receive_message', {
+        _id: populatedMessage._id,
+        userId: socket.userId,
+        senderName: user ? user.username : 'Utilisateur',
+        content: data.content,
+        room: data.room,
+        timestamp: new Date(),
+        sender: populatedMessage.sender
+      });
+
+      console.log(`Message envoyé dans ${data.room} par ${socket.userId}`);
+    } catch (error) {
+      socket.emit('error', { message: 'Erreur lors de l\'envoi du message', error: error.message });
+    }
   });
 
   // Quitter un salon
@@ -119,10 +143,12 @@ io.on('connection', async (socket) => {
 // Importer les routes
 const authRoutes = require('./routes/auth');
 const chatRoomsRoutes = require('./routes/chatRooms');
+const messagesRoutes = require('./routes/messages');
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chat-rooms', chatRoomsRoutes);
+app.use('/api/messages', messagesRoutes);
 
 // Route protégée pour tester le middleware
 app.get('/api/protected', protect, (req, res) => {

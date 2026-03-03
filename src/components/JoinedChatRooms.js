@@ -13,6 +13,7 @@ const JoinedChatRooms = ({ token, joinedRoomsIds = [], onSelectRoom, onRoomLeft 
       fetchJoinedRoomsDetails();
     }
   }, [joinedRoomsIds, token]);
+  
 
   const fetchJoinedRoomsDetails = async () => {
     setLoading(true);

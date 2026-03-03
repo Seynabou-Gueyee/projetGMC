@@ -1,0 +1,109 @@
+.room-users-container {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  min-height: 300px;
+}
+
+.room-users-container h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.no-users {
+  color: #999;
+  text-align: center;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+.users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.user-item:hover {
+  background: #f0f0f0;
+}
+
+.user-item.current-user {
+  background: #e8f5e9;
+  border-left: 3px solid #4caf50;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.user-item.current-user .user-avatar {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+}
+
+.user-name {
+  flex-grow: 1;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.you-badge {
+  color: #4caf50;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.user-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.user-status.online {
+  background: #4caf50;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #4caf50;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #4caf50;
+  }
+  50% {
+    box-shadow: 0 0 0 2px white, 0 0 0 6px rgba(76, 175, 80, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #4caf50;
+  }
+}

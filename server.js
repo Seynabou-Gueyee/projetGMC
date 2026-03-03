@@ -58,44 +58,71 @@ const socketAuthMiddleware = (socket, next) => {
   }
 };
 
+// Pour stocker les utilisateurs connectés
+const User = require('./models/User');
+const connectedUsers = new Map();
+
 io.use(socketAuthMiddleware);
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('Utilisateur connecté:', socket.userId, socket.id);
+  
+  // Stocker les infos de l'utilisateur
+  const user = await User.findById(socket.userId);
+  if (user) {
+    connectedUsers.set(socket.userId, {
+      socketId: socket.id,
+      username: user.username,
+      userId: socket.userId
+    });
+  }
 
   // Rejoindre un salon
-  socket.on('join_room', (room) => {
-    socket.join(room);
-    console.log(`${socket.userId} a rejoint ${room}`);
-    io.to(room).emit('user_joined', { userId: socket.userId, room });
+  socket.on('join_room', (roomId) => {
+    socket.join(roomId);
+    console.log(`${socket.userId} a rejoint ${roomId}`);
+    
+    io.to(roomId).emit('user_joined', { 
+      userId: socket.userId, 
+      room: roomId,
+      username: user ? user.username : 'Utilisateur'
+    });
   });
 
   // Envoyer un message
   socket.on('send_message', (data) => {
     io.to(data.room).emit('receive_message', {
       userId: socket.userId,
+      senderName: user ? user.username : 'Utilisateur',
       content: data.content,
+      room: data.room,
       timestamp: new Date()
     });
   });
 
   // Quitter un salon
-  socket.on('leave_room', (room) => {
-    socket.leave(room);
-    console.log(`${socket.userId} a quitté ${room}`);
-    io.to(room).emit('user_left', { userId: socket.userId });
+  socket.on('leave_room', (roomId) => {
+    socket.leave(roomId);
+    console.log(`${socket.userId} a quitté ${roomId}`);
+    io.to(roomId).emit('user_left', { 
+      userId: socket.userId, 
+      room: roomId 
+    });
   });
 
   socket.on('disconnect', () => {
     console.log('Utilisateur déconnecté:', socket.userId);
+    connectedUsers.delete(socket.userId);
   });
 });
 
 // Importer les routes
 const authRoutes = require('./routes/auth');
+const chatRoomsRoutes = require('./routes/chatRooms');
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/chat-rooms', chatRoomsRoutes);
 
 // Route protégée pour tester le middleware
 app.get('/api/protected', protect, (req, res) => {

@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
+import MessageForm from './MessageForm';
 import RoomUsers from './RoomUsers';
 import './ChatRoom.css';
 
 const ChatRoom = ({ room, user, token }) => {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
-  const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Initialiser Socket.IO
+  // Initialiser Socket.IO et charger les messages historiques
   useEffect(() => {
     if (!room || !token) return;
 
+    // Créer la connexion Socket.IO
     const newSocket = io('http://localhost:5000', {
       auth: {
         token: token
@@ -27,7 +29,15 @@ const ChatRoom = ({ room, user, token }) => {
     });
 
     newSocket.on('receive_message', (data) => {
-      setMessages(prev => [...prev, data]);
+      setMessages(prev => [...prev, {
+        _id: data._id,
+        userId: data.userId,
+        senderName: data.senderName,
+        content: data.content,
+        room: data.room,
+        timestamp: data.timestamp,
+        sender: data.sender
+      }]);
     });
 
     newSocket.on('error', (error) => {
@@ -39,6 +49,25 @@ const ChatRoom = ({ room, user, token }) => {
     });
 
     setSocket(newSocket);
+
+    // Charger les messages historiques
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/messages/room/${room._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        setMessages(response.data.messages || []);
+      } catch (err) {
+        console.error('Erreur lors du chargement des messages:', err);
+      }
+    };
+
+    fetchMessages();
 
     return () => {
       if (newSocket) {
@@ -55,10 +84,10 @@ const ChatRoom = ({ room, user, token }) => {
     }
   }, [messages]);
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-
-    if (!messageInput.trim() || !socket) {
+  // Envoyer un message via Socket.IO
+  const handleSendMessage = async (messageContent) => {
+    if (!socket) {
+      console.error('Socket.IO non connecté');
       return;
     }
 
@@ -66,11 +95,9 @@ const ChatRoom = ({ room, user, token }) => {
 
     try {
       socket.emit('send_message', {
-        content: messageInput,
+        content: messageContent,
         room: room._id || room.id
       });
-
-      setMessageInput('');
     } catch (err) {
       console.error('Erreur lors de l\'envoi du message:', err);
     } finally {
@@ -113,19 +140,11 @@ const ChatRoom = ({ room, user, token }) => {
             <div ref={messagesEndRef} />
           </div>
 
-          <form className="message-form" onSubmit={sendMessage}>
-            <input
-              type="text"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-              placeholder="Écrivez un message..."
-              disabled={loading || !socket}
-              maxLength="500"
-            />
-            <button type="submit" disabled={loading || !socket || !messageInput.trim()}>
-              {loading ? 'Envoi...' : 'Envoyer'}
-            </button>
-          </form>
+          <MessageForm 
+            onSendMessage={handleSendMessage}
+            disabled={loading || !socket}
+            placeholder="Écrivez un message..."
+          />
         </div>
 
         <aside className="sidebar">

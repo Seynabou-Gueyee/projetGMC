@@ -1,0 +1,128 @@
+.voice-player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.play-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.play-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.play-button:active {
+  transform: scale(0.95);
+}
+
+.player-timeline {
+  flex: 1;
+  min-width: 100px;
+}
+
+.timeline-bar {
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.timeline-progress {
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.player-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 60px;
+  font-weight: 600;
+}
+
+.current-time {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.separator {
+  color: var(--border-color);
+}
+
+.total-time {
+  color: var(--text-muted);
+}
+
+.transcription {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-light);
+}
+
+.transcription-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.transcription-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  padding: var(--spacing-sm);
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .voice-player {
+    padding: 10px;
+  }
+
+  .player-controls {
+    gap: 8px;
+  }
+
+  .play-button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .player-time {
+    min-width: 50px;
+    font-size: 11px;
+  }
+}

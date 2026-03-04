@@ -1,0 +1,232 @@
+.room-users-container {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  margin-top: var(--spacing-xl);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-users-container h4 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.no-users {
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  font-style: italic;
+  flexibility: 1;
+}
+
+.users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  transition: all var(--transition-normal);
+  border: 1px solid transparent;
+}
+
+.user-item:hover {
+  background: var(--bg-primary);
+  border-color: var(--border-light);
+}
+
+.user-item.current-user {
+  background: rgba(76, 175, 80, 0.08);
+  border-left: 3px solid var(--accent-color);
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.user-item.current-user .user-avatar {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #45a049 100%);
+}
+
+.user-name {
+  flex-grow: 1;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.you-badge {
+  color: var(--accent-color);
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(76, 175, 80, 0.1);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.user-status {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.user-status.online {
+  background: var(--accent-color);
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--accent-color);
+  animation: pulse var(--transition-slow) infinite;
+}
+
+@media (max-width: 1024px) {
+  .room-users-container {
+    min-height: 250px;
+  }
+
+  .user-item {
+    padding: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 768px) {
+  .room-users-container {
+    min-height: auto;
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+  }
+
+  .room-users-container h4 {
+    font-size: 14px;
+  }
+
+  .users-list {
+    max-height: 200px;
+    overflow-y: auto;
+    gap: var(--spacing-sm);
+  }
+
+  .user-item {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 640px) {
+  .room-users-container {
+    padding: var(--spacing-md);
+  }
+
+  .room-users-container h4 {
+    font-size: 13px;
+  }
+
+  .user-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .user-name {
+    font-size: 12px;
+  }
+
+  .you-badge {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-users-container {
+    min-height: 200px;
+    padding: var(--spacing-sm);
+  }
+
+  .room-users-container h4 {
+    font-size: 12px;
+  }
+
+  .no-users {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    font-size: 12px;
+  }
+
+  .users-list {
+    max-height: 150px;
+    gap: var(--spacing-xs);
+  }
+
+  .user-item {
+    padding: 4px 6px;
+  }
+
+  .user-avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .user-name {
+    font-size: 11px;
+  }
+
+  .user-status {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .room-users-container h4 {
+    font-size: 11px;
+  }
+
+  .user-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .user-name {
+    font-size: 10px;
+  }
+}

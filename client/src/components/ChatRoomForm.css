@@ -1,0 +1,165 @@
+.create-chat-room-form-container {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-xl);
+  border-left: 4px solid var(--primary-color);
+  animation: slideInRight var(--transition-slow);
+}
+
+.create-chat-room-form-container h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.create-chat-room-form-container .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.create-chat-room-form-container label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.create-chat-room-form-container input,
+.create-chat-room-form-container textarea {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all var(--transition-normal);
+  box-sizing: border-box;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.create-chat-room-form-container input::placeholder,
+.create-chat-room-form-container textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.create-chat-room-form-container input:focus,
+.create-chat-room-form-container textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.create-chat-room-form-container textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.create-chat-room-form-container button {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.create-chat-room-form-container button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.create-chat-room-form-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.create-chat-room-form-container .error-message {
+  background: rgba(244, 67, 54, 0.08);
+  color: var(--danger-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 14px;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .create-chat-room-form-container {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .create-chat-room-form-container {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .create-chat-room-form-container h3 {
+    font-size: 16px;
+  }
+
+  .create-chat-room-form-container label {
+    font-size: 13px;
+  }
+
+  .create-chat-room-form-container textarea {
+    min-height: 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .create-chat-room-form-container {
+    padding: var(--spacing-lg);
+  }
+
+  .create-chat-room-form-container input,
+  .create-chat-room-form-container textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-chat-room-form-container {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .create-chat-room-form-container h3 {
+    font-size: 14px;
+  }
+
+  .create-chat-room-form-container label {
+    font-size: 12px;
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .create-chat-room-form-container button {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 320px) {
+  .create-chat-room-form-container {
+    padding: var(--spacing-sm);
+  }
+
+  .create-chat-room-form-container h3 {
+    font-size: 12px;
+  }
+
+  .create-chat-room-form-container label {
+    font-size: 11px;
+  }
+}

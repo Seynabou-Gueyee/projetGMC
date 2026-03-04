@@ -160,8 +160,8 @@ const ChatbotInterface = ({ token, currentRoom, currentUser }) => {
     }, 0);
   };
 
-  // Utiliser une suggestion
-  const useSuggestion = (suggestion) => {
+  // Utiliser une suggestion (pas un hook React, juste une fonction)
+  const applySuggestion = (suggestion) => {
     setInputValue(suggestion);
     setSuggestions([]);
   };
@@ -227,7 +227,7 @@ const ChatbotInterface = ({ token, currentRoom, currentUser }) => {
               <button
                 key={idx}
                 className="suggestion-btn"
-                onClick={() => useSuggestion(suggestion)}
+                onClick={() => applySuggestion(suggestion)}
               >
                 {suggestion}
               </button>

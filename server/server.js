@@ -1,3 +1,6 @@
+// =======================
+// IMPORTS
+// =======================
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -139,20 +142,22 @@ app.get('/api/protected', protect, (req, res) => {
 // =======================
 // FRONTEND (PRODUCTION)
 // =======================
-app.use(express.static(path.join(__dirname, '../client/dist')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
+// Sert le build du frontend
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // =======================
-// ERROR HANDLER (TOUJOURS À LA FIN)
+// ERROR HANDLER (AVANT LE CATCH-ALL!)
 // =======================
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     message: 'Erreur serveur'
   });
+});
+
+// Catch-all : redirige toutes les routes vers index.html (À LA FIN!)
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 // =======================

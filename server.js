@@ -140,6 +140,7 @@ io.on('connection', async (socket) => {
   });
 });
 
+// --- ROUTES API ---
 // Importer les routes
 const authRoutes = require('./routes/auth');
 const chatRoomsRoutes = require('./routes/chatRooms');
@@ -150,7 +151,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/chat-rooms', chatRoomsRoutes);
 app.use('/api/messages', messagesRoutes);
 
-// Route protégée pour tester le middleware
 app.get('/api/protected', protect, (req, res) => {
   res.status(200).json({ 
     success: true, 
@@ -159,12 +159,18 @@ app.get('/api/protected', protect, (req, res) => {
   });
 });
 
-// Route de base
-app.get('/', (req, res) => {
-  res.send('Serveur TalkMe est en ligne');
+// --- CONFIGURATION FRONTEND (POUR LE DÉPLOIEMENT) ---
+const path = require('path');
+
+// 1. On sert les fichiers statiques du dossier 'dist' (ou 'build')
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// 2. Pour toutes les autres routes (/, /auth, /chat), on renvoie l'index.html de React
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-// Démarrer le serveur
+// --- DÉMARRAGE ---
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Serveur écoute sur le port ${PORT}`);
